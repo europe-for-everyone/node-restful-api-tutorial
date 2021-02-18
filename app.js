@@ -1,18 +1,23 @@
+const LocalStorage = require( "./services/storage/index");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+const provaRoutes = require("./api/routes/routeProva");
+
+const localStorageService = LocalStorage.getService();
 
 mongoose.connect(
-  "mongodb://node-shop:" +
     process.env.MONGO_ATLAS_PW +
-    "@node-rest-shop-shard-00-00-wovcj.mongodb.net:27017,node-rest-shop-shard-00-01-wovcj.mongodb.net:27017,node-rest-shop-shard-00-02-wovcj.mongodb.net:27017/test?ssl=true&replicaSet=node-rest-shop-shard-0&authSource=admin",
+    "@node-rest-shop.7ho1w.mongodb.net/node-rest-shop?retryWrites=true&w=majority",
   {
-    useMongoClient: true
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
   }
 );
 
@@ -36,7 +41,7 @@ app.use((req, res, next) => {
 // Routes which should handle requests
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
-
+app.use("/prova", provaRoutes);
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
