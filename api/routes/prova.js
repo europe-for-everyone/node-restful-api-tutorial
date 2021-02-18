@@ -6,7 +6,7 @@ const API = 'https://dev-manager.opus.plus/api/OP';
 
 const checkAuth = (result, res) => {
     if (result.data.data.errors) {
-        var error = result.data?.data?.errors[0]?.description;
+        var error = result.data.data.errors[0].description;
         if (error == "TOKEN NOT FOUND" || error == "Session expired") {
             res.status(401).json({
                 error: "No authorization"
